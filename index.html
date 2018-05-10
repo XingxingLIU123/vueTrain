@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vue培训</title>
+  <style>
+    #container, html, body{
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+</body>
+<script src="echarts.min.js"></script>
+<script>
+  window.onload = function () {
+    var highlight = function (str) {
+      return `<b style="color: #e96900"><i> ${str} </i></b>`
+    }
+    var charts = echarts.init(document.querySelector('#container'))
+    var option = {
+      tooltip: {
+        trigger: 'item',
+        triggerOn: 'mousemove',
+        formatter (item) {
+          return item.data.label || item.data.name
+        },
+      },
+      series: [
+        {
+          type: 'tree',
+          data: [
+            {
+              name: 'Vue',
+              children: [
+                {
+                  name: 'Vue基础入门',
+                  children: [
+                    {
+                      name: 'template',
+                      children: [
+                        // 模版语法
+                        {
+                          name: '模版语法',
+                          children: [
+                            {name: '文本'},
+                            {name: '属性'},
+                            {name: '使用JS表达式'}
+                          ]
+                        },
+                        // 指令
+                        {
+                          name: '指令',
+                          label: '指令 (Directives) 是带有 v- 前缀的特殊特性.当表达式的值改变时，将其产生的连带影响，响应式地作用于 DOM。',
+                          children: [
+                            {
+                              name: 'v-bind',
+                              label: '缩写为' + highlight(':'),
+                              children: [
+                                {name: '对象写法', label: 'v-bind:class="{active: isActive, error: isError}"<br>v-bind:style="{color: activeColor}"'},
+                                {name: '数组写法', label: 'v-bind:class="[activeClass, errorClass]"'}
+                              ]
+                            },
+                            {name: 'v-on', label: '缩写为' + highlight('@')},
+                            {name: 'v-text', label: '文本内容'},
+                            {
+                              name: 'v-for',
+                              label: '循环渲染, 可以循环' + highlight('数组/对象/数字/字符串'),
+                              children: [
+                                {name: '数组', label: '(item, index) in items'},
+                                {name: '对象', label: '(value, key, index) in objs'},
+                                {name: '数字', label: 'num in nums'},
+                                {name: '字符串', label: 'str in strs'}
+                              ]
+                            },
+                            {name: 'v-once', label: '只执行一次'},
+                            {name: 'v-if/v-else-if/v-else', label: 'v-if通过浏览器' + highlight('是否渲染DOM') + '来控制显隐'},
+                            {name: 'v-show', label: 'v-show通过' + highlight('CSS样式display') + '来控制显隐'},
+                            {
+                              name: 'v-model',
+                              label: `常用修饰符:<br>${highlight('.number')}: 将v-model值自动转为数字<br>${highlight('.trim')}：自动过滤用户输入的首尾空格`,
+                              children: [
+                                {name: 'input'},
+                                {name: 'textarea'},
+                                {name: 'checkbox', label: '通常为布尔值, 即true/false'},
+                                {name: 'radio', label: '通常model为字符串'},
+                                {name: 'select'}
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          name: '事件处理(@)',
+                          children: [
+                            {
+                              name: '基本用法',
+                              children: [{name: '直接运行JS代码'}, {name: '绑定methods中函数方法'}]
+                            },
+                            {
+                              name: '传入参数',
+                              label: '需要获取原生DOM事件可传入参数' + highlight('$event')
+                            },
+                            {
+                              name: '事件修饰符',
+                              label: '修饰符可以让我们更纯粹的处理数据逻辑，而不用关心DOM事件细节'
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: 'script',
+                      children: [
+                        {
+                          name: '数据',
+                          children: [
+                            {
+                              name: 'data',
+                              label: `类型：${highlight('Function')}<br>
+                              1.可在其他地方用this.xxx获取或修改`
+                            },
+                            {
+                              name: 'computed',
+                              label: `类型：${highlight('{ [key: string]: Function | { get: Function, set: Function } }')}<br>
+                              1.值不能和data${highlight('重复')}<br>
+                              2.通常${highlight('只能取')}不能改<br>
+                              3.如需要改计算出的值，要在computed设置${highlight('set')}`
+                            },
+                            {
+                              name: 'watch',
+                              label: `类型：${highlight('{ [key: string]: string | Function | Object | Array }')}<br>
+                              watch与computed的区别：<br>
+                              &nbsp;&nbsp;&nbsp;&nbsp;computed只能用于计算，而不能在其中执行其他操作或方法；<br>
+                              &nbsp;&nbsp;&nbsp;&nbsp;watch可以执行任何操作或方法`
+                            },
+                            {
+                              name: 'methods',
+                              label: `类型：${highlight('{ [key: string]: Function }')}<br>
+                              1.和data一样,通过this.xxx访问`
+                            },
+                            {
+                              name: 'props',
+                              label: `类型：${highlight('Array<string> | Object')}<br>
+                                1.用于接收父组件传递过来的值`
+                            }
+                          ]
+                        },
+                        {
+                          name: '生命周期钩子',
+                          children: [
+                            {name: 'beforeCreate'},
+                            {name: 'created', label: `${highlight('DOM还未生成')}`},
+                            {name: 'beforeMount'},
+                            {name: 'mounted', label: `${highlight('DOM已经生成')}`},
+                            {name: '......'}
+                          ]
+                        },
+                        {
+                          name: '资源',
+                          children: [
+                            {
+                              name: 'directives',
+                              label: '指令',
+                              children: [
+                                {name: 'bind', label: '只调用一次，指令第一次绑定到元素时调用'},
+                                {name: 'inserted', label: '被绑定元素插入父节点时调用'},
+                                {name: 'update', label: '更新时调用'},
+                                {name: 'unbind', label: '只调用一次，指令与元素解绑时调用'}
+                              ]
+                            },
+                            {name: 'filters', label: `类型：${highlight('Object')}<br>
+                            1.使用${highlight('管道符')}  |<br>
+                            2.必须传入至少一个参数并且返回一个结果`},
+                            {
+                              name: 'components',
+                              label: `类型：${highlight('Object')}<br>
+                              1.需要先${highlight('import')}组件<br>
+                              2.模版中需要转为'-'`,
+                              children: [
+                                {name: 'view', label: '页面容器'},
+                                {name: 'global component', label: '全局组件'},
+                                {name: 'simple component', label: '复用性高基础组件，如button，input等'},
+                                {name: 'complex component', label: '复杂组件，包含交互/数据/逻辑等等'}
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  name: 'Vue全家桶',
+                  children: [
+                    {
+                      name: '路由(router)',
+                      children: [
+                        {name: '标签', label: '\<\ router-view>\<\ /router-view>'},
+                        {name: '模式', children: [{name: 'hash', label: `带${highlight('#')}号`}, {name: 'history', label: '不带 # 号'}]},
+                        {name: '跳转', label: `1.\<\ router-link>\<\ /router-link>可以看作\<\ a>\<\ /a><br>
+                        2.js中采用this.$router.push()`}
+                      ]
+                    },
+                    {
+                      name: '请求(axios)',
+                      children: [
+                        {name: '拦截器', label: '请求前拦截，返回前拦截'},
+                        {name: '普通请求', label: 'promise'}
+                      ]
+                    },
+                    {
+                      name: '状态管理(vuex)',
+                      children: [
+                        {name: 'state'},
+                        {name: 'mutations'},
+                        {name: 'actions'},
+                        {name: 'getters'}
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          label: {
+            normal: {
+              position: 'left',
+            }
+          },
+          layout: 'orthogonal',
+          expandAndCollapse: true,
+          initialTreeDepth: 5
+        }
+      ]
+    }
+    charts.setOption(option)
+    window.onresize = charts.resize
+    charts.on('click', function (param) {
+      if (param.data.name === 'JS最佳实践') {
+        window.open('https://github.com/airbnb/javascript?utm_source=gold_browser_extension')
+      }
+    })
+  }
+</script>
+</html>
